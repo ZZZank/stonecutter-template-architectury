@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
@@ -43,6 +41,7 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
+    @Suppress("UnstableApiUsage")
     mappings(loom.layered {
         mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
         common.mod.dep("neoforge_patch").takeUnless { it.startsWith('[') }?.let {
@@ -83,7 +82,7 @@ tasks.jar {
 
 tasks.remapJar {
     injectAccessWidener = true
-    input = tasks.shadowJar.get().archiveFile
+    inputFile = tasks.shadowJar.get().archiveFile
     archiveClassifier = null
     dependsOn(tasks.shadowJar)
 }

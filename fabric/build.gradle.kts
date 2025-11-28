@@ -1,6 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
-
 plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
@@ -76,7 +73,7 @@ tasks.shadowJar {
 
 tasks.remapJar {
     injectAccessWidener = true
-    input = tasks.shadowJar.get().archiveFile
+    inputFile = tasks.shadowJar.get().archiveFile
     archiveClassifier = null
     dependsOn(tasks.shadowJar)
 }
