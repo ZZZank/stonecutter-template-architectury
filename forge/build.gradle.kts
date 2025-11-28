@@ -45,10 +45,6 @@ dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
     mappings("net.fabricmc:yarn:$minecraft+build.${common.mod.dep("yarn_build")}:v2")
     "forge"("net.minecraftforge:forge:$minecraft-${common.mod.dep("forge_loader")}")
-    "io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras")}".let {
-        implementation(it)
-        include(it)
-    }
 
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
     shadowBundle(project(common.path, "transformProductionForge")) { isTransitive = false }

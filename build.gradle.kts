@@ -19,10 +19,6 @@ dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
     mappings("net.fabricmc:yarn:$minecraft+build.${mod.dep("yarn_build")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
-    "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
-        annotationProcessor(it)
-        implementation(it)
-    }
 }
 
 loom {
