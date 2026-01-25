@@ -47,4 +47,12 @@ allprojects {
         targetCompatibility = java
         sourceCompatibility = java
     }
+
+    tasks.compileJava {
+        options.encoding = "UTF-8"
+
+        // very few developers will provide source jar when publishing mods, we add param names in production jar
+        // to make life easier for those who need to work with the mod
+        options.compilerArgs.add("-parameters")
+    }
 }
