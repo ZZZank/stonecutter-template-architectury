@@ -11,8 +11,11 @@ base {
 }
 
 architectury.common(stonecutter.tree.branches.mapNotNull {
-    if (stonecutter.current.project !in it) null
-    else it.project.prop("loom.platform")
+    if (stonecutter.current.project !in it) {
+        null
+    } else {
+        it.project.prop("loom.platform")
+    }
 })
 
 dependencies {
@@ -31,15 +34,17 @@ loom {
     }
 }
 
-java {
-    withSourcesJar()
-    val java = if (stonecutter.eval(minecraft, ">=1.20.5")) {
-        JavaVersion.VERSION_21
-    } else if (stonecutter.eval(minecraft, ">=1.18")) {
-        JavaVersion.VERSION_17
-    } else {
-        JavaVersion.VERSION_1_8
+allprojects {
+    java {
+        withSourcesJar()
+        val java = if (stonecutter.eval(minecraft, ">=1.20.5")) {
+            JavaVersion.VERSION_21
+        } else if (stonecutter.eval(minecraft, ">=1.18")) {
+            JavaVersion.VERSION_17
+        } else {
+            JavaVersion.VERSION_1_8
+        }
+        targetCompatibility = java
+        sourceCompatibility = java
     }
-    targetCompatibility = java
-    sourceCompatibility = java
 }
