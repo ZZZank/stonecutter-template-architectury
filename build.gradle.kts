@@ -41,6 +41,8 @@ allprojects {
             JavaVersion.VERSION_21
         } else if (stonecutter.eval(minecraft, ">=1.18")) {
             JavaVersion.VERSION_17
+        } else if (stonecutter.eval(minecraft, ">=1.17")) {
+            JavaVersion.VERSION_16
         } else {
             JavaVersion.VERSION_1_8
         }
