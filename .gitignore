@@ -5,6 +5,11 @@ build/
 out/
 classes/
 
+# minecraft
+
+/run/
+/.architectury-transformer/
+
 # eclipse
 
 *.launch
@@ -27,10 +32,6 @@ bin/
 # macos
 
 *.DS_Store
-
-# fabric
-
-run/
 
 # java
 
