@@ -55,12 +55,6 @@ dependencies {
 }
 
 loom {
-    decompilers {
-        get("vineflower").apply { // Adds names to lambdas - useful for mixins
-            options.put("mark-corresponding-synthetics", "1")
-        }
-    }
-
     runConfigs.all {
         isIdeConfigGenerated = true
         runDir = "../../../run"
