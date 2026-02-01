@@ -78,7 +78,26 @@ tasks.processResources {
 }
 
 tasks.register<Copy>("buildAndCollect") {
-    from(tasks.remapJar.get().archiveFile, tasks.remapSourcesJar.get().archiveFile)
+    from(tasks.remapJar.get().archiveFile)
     into(rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader"))
+    doLast {
+        val file = rootProject.layout
+            .buildDirectory
+            .file("libs/publish/$minecraft-$loader.txt")
+            .get()
+            .asFile
+        file.parentFile.mkdirs()
+        file.writeText(
+            mapOf(
+                "id" to mod.id,
+                "version" to mod.version,
+                "name" to mod.name,
+                "group" to mod.group,
+                "platform" to loader,
+                "mc_version" to minecraft,
+                "file_name" to tasks.remapJar.get().archiveFileName.get(),
+            ).asSequence().joinToString("\n")
+        )
+    }
     dependsOn(tasks.build)
 }
