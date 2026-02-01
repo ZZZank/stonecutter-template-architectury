@@ -11,10 +11,10 @@ base {
 }
 
 architectury.common(stonecutter.tree.branches.mapNotNull {
-    if (stonecutter.current.project !in it) {
-        null
-    } else {
+    if (stonecutter.current.project in it) {
         it.project.prop("loom.platform")
+    } else {
+        null
     }
 })
 
@@ -34,27 +34,42 @@ loom {
     }
 }
 
-allprojects {
-    java {
-        withSourcesJar()
-        val java = if (stonecutter.eval(minecraft, ">=1.20.5")) {
-            JavaVersion.VERSION_21
-        } else if (stonecutter.eval(minecraft, ">=1.18")) {
-            JavaVersion.VERSION_17
-        } else if (stonecutter.eval(minecraft, ">=1.17")) {
-            JavaVersion.VERSION_16
-        } else {
-            JavaVersion.VERSION_1_8
+repositories {
+    fun strictMaven(name: String, url: String, vararg groups: String) = exclusiveContent {
+        forRepository {
+            maven(url) {
+                this.name = name
+            }
         }
-        targetCompatibility = java
-        sourceCompatibility = java
+        filter {
+            groups.forEach(this::includeGroup)
+        }
     }
 
-    tasks.compileJava {
-        options.encoding = "UTF-8"
+    mavenCentral()
+    strictMaven("CurseMaven", "https://cursemaven.com", "curse.maven")
+    strictMaven("Modrinth", "https://api.modrinth.com/maven", "maven.modrinth")
+}
 
-        // very few developers will provide source jar when publishing mods, we add param names in production jar
-        // to make life easier for those who need to work with the mod
-        options.compilerArgs.add("-parameters")
+java {
+    withSourcesJar()
+    val java = if (stonecutter.eval(minecraft, ">=1.20.5")) {
+        JavaVersion.VERSION_21
+    } else if (stonecutter.eval(minecraft, ">=1.18")) {
+        JavaVersion.VERSION_17
+    } else if (stonecutter.eval(minecraft, ">=1.17")) {
+        JavaVersion.VERSION_16
+    } else {
+        JavaVersion.VERSION_1_8
     }
+    targetCompatibility = java
+    sourceCompatibility = java
+}
+
+tasks.compileJava {
+    options.encoding = "UTF-8"
+
+    // very few developers will provide source jar when publishing mods, we add param names in production jar
+    // to make life easier for those who need to work with the mod
+    options.compilerArgs.add("-parameters")
 }
