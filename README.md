@@ -1,16 +1,21 @@
 # Stonecutter Template (Architectury Loom)
 
-Minecraft mod development workspace, utilizing [Stonecutter](https://stonecutter.kikugie.dev) and [Architectury Loom](https://github.com/architectury/architectury-loom) to provide support for developing modern (1.14.4+) multi-platform (Fabric/Forge/...) Minecraft mods.
+Minecraft mod development workspace, utilizing [Stonecutter](https://stonecutter.kikugie.dev)
+and [Architectury Loom](https://github.com/architectury/architectury-loom) to provide support for developing modern (
+1.14.4+) multi-platform (Fabric/Forge/...) Minecraft mods.
 
-Use `/gradlew buildAndCollect` to build mod file for all enabled platforms. Their result will be copied to `./build/libs`, grouped by mod version and platform.
+Use `/gradlew buildAndCollect` to build mod file for all enabled platforms. Their result will be copied to
+`./build/libs`, grouped by mod version and platform.
 
 Commonly used maven is registered in [repo-convention.gradle.kts](./buildSrc/src/main/kotlin/repo-convention.gradle.kts)
 
 ## Project Structure
 
-Similar to Architectury-only template, this template uses `common + {platform}` project layout. But there's no dedicated `common` subproject, instead, the root project now serves as `common`.
+Similar to Architectury-only template, this template uses `common + {platform}` project layout. But there's no dedicated
+`common` subproject, instead, the root project now serves as `common`.
 
-To support multi-version development, there's a `versions` folder for holding version-specific data like `gradle.properties`, in each subproject. Check Stonecutter Wiki for more details.
+To support multi-version development, there's a `versions` folder for holding version-specific data like
+`gradle.properties`, in each subproject. Check Stonecutter Wiki for more details.
 
 ### Example: 1.20.1-forge
 
@@ -20,6 +25,19 @@ To support multi-version development, there's a `versions` folder for holding ve
 - `versions/1.20.1/gradle.properties`: properties applied to 1.20.1
 - `forge/gradle.properties`: properties applied to Forge platform
 - `gradle.properties`: properties applied globally
+
+## Publishing
+
+This template provided a semi-automatic publishing script, where you can publish a new release for all supported version
+by ticking one checkbox when triggering GitHub action manually
+
+See [build.yml](./.github/workflows/build.yml) for more details. You will need uncomment the platform you want to
+publish to, and provide project id and/or API key. API keys, by default, should be stored in GitHub Secrets
+
+<details>
+    <summary>Well</summary>
+    To be honest, using GitHub Action for publshing is a bad idea, because you will have to find a way of passing version related information from Gradle to GitHub Action, which ends up to be moch more complicated than simply using Gradle plugin
+</details>
 
 ## Related Resources
 
