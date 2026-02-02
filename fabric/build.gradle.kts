@@ -53,6 +53,29 @@ loom {
     }
 }
 
+java {
+    withSourcesJar()
+
+    val requiredJava = when {
+        sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
+        sc.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
+        sc.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+        sc.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+        else -> JavaVersion.VERSION_1_8
+    }
+
+    targetCompatibility = requiredJava
+    sourceCompatibility = requiredJava
+}
+
+tasks.compileJava {
+    options.encoding = "UTF-8"
+
+    // very few developers will provide source jar when publishing mods, we add param names in production jar
+    // to make life easier for those who need to work with the mod
+    options.compilerArgs.add("-parameters")
+}
+
 tasks.shadowJar {
     configurations = listOf(shadowBundle)
     archiveClassifier = "dev-shadow"
