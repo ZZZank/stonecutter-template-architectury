@@ -51,6 +51,12 @@ loom {
         runDir = "../../../run"
         vmArgs("-Dmixin.debug.export=true")
     }
+
+    decompilers {
+        get("vineflower").apply { // Adds names to lambdas - useful for mixins
+            options.put("mark-corresponding-synthetics", "1")
+        }
+    }
 }
 
 java {
