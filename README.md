@@ -21,7 +21,7 @@ To support multi-version development, there's a `versions` folder for holding ve
 
 ## Related Resources
 
-- Stonecutter: [IDEA plugin](https://stonecutter.kikugie.dev/), [WIKI](https://stonecutter.kikugie.dev/wiki/), [Homepage](https://stonecutter.kikugie.dev/)
+- Stonecutter: [IDEA plugin](https://plugins.jetbrains.com/plugin/25044-stonecutter-dev), [WIKI](https://stonecutter.kikugie.dev/wiki/), [Homepage](https://stonecutter.kikugie.dev/)
 - Architectury: [WIKI](https://docs.architectury.dev/)
 - Fabric: [WIKI](https://docs.architectury.dev/)
 - Forge: [WIKI](https://docs.minecraftforge.net/)
