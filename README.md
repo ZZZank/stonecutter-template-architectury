@@ -24,7 +24,7 @@ To support multi-version development, there's a `versions` folder for holding ve
 - `forge/versions/1.20.1`: version-specific data for 1.20.1-forge
 - `versions/1.20.1/gradle.properties`: properties applied to 1.20.1
 - `forge/gradle.properties`: properties applied to Forge platform
-- `gradle.properties`: properties applied globally
+- `gradle.properties`: properties applied to the "common" project, since the root project now serves as `common`
 
 ## Publishing
 
