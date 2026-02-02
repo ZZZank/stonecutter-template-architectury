@@ -4,6 +4,8 @@ Minecraft mod development workspace, utilizing [Stonecutter](https://stonecutter
 
 Use `/gradlew buildAndCollect` to build mod file for all enabled platforms. Their result will be copied to `./build/libs`, grouped by mod version and platform.
 
+Commonly used maven is registered in [repo-convention.gradle.kts](./buildSrc/src/main/kotlin/repo-convention.gradle.kts)
+
 ## Project Structure
 
 Similar to Architectury-only template, this template uses `common + {platform}` project layout. But there's no dedicated `common` subproject, instead, the root project now serves as `common`.

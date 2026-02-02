@@ -2,6 +2,7 @@ plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
     id("com.gradleup.shadow")
+    `repo-convention`
 }
 
 val loader = prop("loom.platform")!!
