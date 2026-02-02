@@ -28,16 +28,17 @@ To support multi-version development, there's a `versions` folder for holding ve
 
 ## Publishing
 
-This template provided a semi-automatic publishing script, where you can publish a new release for all supported version
-by ticking one checkbox when triggering GitHub action manually
+This template uses [ModPublisher](https://github.com/firstdarkdev/modpublisher) to handle publishing of mods. The plugin
+includes four tasks. `publishMod`, `publishCurseforge`, `publishGitHub`, `publishModrinth` and can be found under the
+`publishing` section of the Gradle tasks. `publishMod` can be used for publishing to all valid platforms
 
-See [build.yml](./.github/workflows/build.yml) for more details. You will need uncomment the platform you want to
-publish to, and provide project id and/or API key. API keys, by default, should be stored in GitHub Secrets
+| Platform   | Properties ([gradle.properties](./gradle.properties)) | GitHub secret    |
+|------------|-------------------------------------------------------|------------------|
+| GitHub     | `publish.github`                                      | `GITHUB_TOKEN`   |
+| Modrinth   | `publish.modrinth`                                    | `MODRINTH_TOKEN` |
+| CurseForge | `publish.curseforge`                                  | `CURSE_TOKEN`    |
 
-<details>
-    <summary>Well</summary>
-    To be honest, using GitHub Action for publshing is a bad idea, because you will have to find a way of passing version related information from Gradle to GitHub Action, which ends up to be moch more complicated than simply using Gradle plugin
-</details>
+Note: In GitHub Action, `GITHUB_TOKEN` will be generated automatically.
 
 ## Related Resources
 

@@ -2,6 +2,7 @@ plugins {
     id("dev.architectury.loom")
     id("architectury-plugin")
     id("com.gradleup.shadow")
+    id("com.hypherionmc.modutils.modpublisher")
     `repo-convention`
 }
 
@@ -9,6 +10,13 @@ val loader = prop("loom.platform")!!
 val minecraft: String = stonecutter.current.version
 val common: Project = requireNotNull(stonecutter.node.sibling("")?.project) {
     "No common project for $project"
+}
+val requiredJava = when {
+    sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
+    sc.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
+    sc.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+    sc.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+    else -> JavaVersion.VERSION_1_8
 }
 
 version = "${mod.version}+$minecraft"
@@ -62,14 +70,6 @@ loom {
 java {
     withSourcesJar()
 
-    val requiredJava = when {
-        sc.current.parsed >= "26.1" -> JavaVersion.VERSION_25
-        sc.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
-        sc.current.parsed >= "1.18" -> JavaVersion.VERSION_17
-        sc.current.parsed >= "1.17" -> JavaVersion.VERSION_16
-        else -> JavaVersion.VERSION_1_8
-    }
-
     targetCompatibility = requiredJava
     sourceCompatibility = requiredJava
 }
@@ -110,24 +110,44 @@ tasks.processResources {
 tasks.register<Copy>("buildAndCollect") {
     from(tasks.remapJar.get().archiveFile)
     into(rootProject.layout.buildDirectory.file("libs/${mod.version}/$loader"))
-    doLast {
-        val file = rootProject.layout
-            .buildDirectory
-            .file("libs/publish/$minecraft-$loader.txt")
-            .get()
-            .asFile
-        file.parentFile.mkdirs()
-        file.writeText(
-            mapOf(
-                "id" to mod.id,
-                "version" to mod.version,
-                "name" to mod.name,
-                "group" to mod.group,
-                "platform" to loader,
-                "mc_version" to minecraft,
-                "file_name" to tasks.remapJar.get().archiveFileName.get(),
-            ).asSequence().joinToString("\n")
-        )
-    }
     dependsOn(tasks.build)
+}
+
+// see: https://github.com/firstdarkdev/modpublisher
+publisher {
+    // modrinth
+    var projectID = prop("publish.modrinth")
+    var apiKey: String? = System.getenv("MODRINTH_TOKEN")
+    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
+        modrinthID.set(projectID)
+        apiKeys { modrinth(apiKey) }
+    }
+
+    // CurseForge
+    projectID = prop("publish.curseforge")
+    apiKey = System.getenv("CURSE_TOKEN")
+    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
+        curseID.set(projectID)
+        apiKeys { curseforge(apiKey) }
+    }
+
+    // GitHub
+    projectID = prop("publish.github")
+    apiKey = System.getenv("GITHUB_TOKEN")
+    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
+        githubRepo.set(projectID)
+        apiKeys { github(apiKey) }
+    }
+
+    // Enable Debug mode. When enabled, no files will actually be uploaded
+    debug.set(false)
+
+    changelog.set(rootProject.file("CHANGELOG.md"))
+    projectVersion.set(mod.version)
+    // Example: Display Name 1.20.1-forge
+    displayName.set("${mod.name} ${minecraft}-${loader}")
+    gameVersions.set(listOf(minecraft))
+    loaders.set(listOf(loader))
+    artifact.set(tasks.remapJar)
+    setJavaVersions(requiredJava)
 }
