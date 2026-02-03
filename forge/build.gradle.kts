@@ -155,8 +155,8 @@ publisher {
 
     changelog.set(rootProject.file("CHANGELOG.md"))
     projectVersion.set(mod.version)
-    // Example: Display Name 1.20.1-forge
-    displayName.set("${mod.name} ${minecraft}-${loader}")
+    // Example: 1.2.3 for 1.20.1-forge
+    displayName.set("${mod.version} for ${minecraft}-${loader}")
     gameVersions.set(listOf(minecraft))
     loaders.set(listOf(loader))
     artifact.set(tasks.remapJar)
