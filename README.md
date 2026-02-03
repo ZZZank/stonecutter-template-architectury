@@ -38,7 +38,7 @@ includes four tasks. `publishMod`, `publishCurseforge`, `publishGitHub`, `publis
 | Modrinth   | `publish.modrinth`                                    | `MODRINTH_TOKEN` |
 | CurseForge | `publish.curseforge`                                  | `CURSE_TOKEN`    |
 
-Note: In GitHub Action, `GITHUB_TOKEN` will be generated automatically.
+Note: In GitHub Action, `GITHUB_TOKEN` secret will be generated automatically.
 
 ## Related Resources
 

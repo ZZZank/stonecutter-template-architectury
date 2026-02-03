@@ -51,4 +51,4 @@ jobs:
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           CURSE_TOKEN: ${{ secrets.CURSE_TOKEN }}
-          # GITHUB_TOKEN is generated automatically, so it will publish whenever 'publish.github' is defined
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret will be generated automatically
