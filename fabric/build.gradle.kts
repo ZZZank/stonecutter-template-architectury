@@ -115,28 +115,28 @@ tasks.register<Copy>("buildAndCollect") {
 
 // see: https://github.com/firstdarkdev/modpublisher
 publisher {
-    // modrinth
-    var projectID = prop("publish.modrinth")
-    var apiKey: String? = System.getenv("MODRINTH_TOKEN")
-    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
-        modrinthID.set(projectID)
-        apiKeys { modrinth(apiKey) }
+    fun validatedProp(propKey: String, env: String): Pair<String, String>? {
+        val projectID = prop(propKey)
+        val apiKey: String? = System.getenv(env)
+        if (projectID != null && !projectID.startsWith('[') && !apiKey.isNullOrEmpty()) {
+            return projectID to apiKey
+        }
+        return null
     }
 
-    // CurseForge
-    projectID = prop("publish.curseforge")
-    apiKey = System.getenv("CURSE_TOKEN")
-    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
-        curseID.set(projectID)
-        apiKeys { curseforge(apiKey) }
+    validatedProp("publish.modrinth", "MODRINTH_TOKEN")?.let { (id, key) ->
+        modrinthID.set(id)
+        apiKeys { modrinth(key) }
     }
 
-    // GitHub
-    projectID = prop("publish.github")
-    apiKey = System.getenv("GITHUB_TOKEN")
-    if (!projectID.isNullOrEmpty() && !apiKey.isNullOrEmpty()) {
-        githubRepo.set(projectID)
-        apiKeys { github(apiKey) }
+    validatedProp("publish.curseforge", "CURSE_TOKEN")?.let { (id, key) ->
+        curseID.set(id)
+        apiKeys { curseforge(key) }
+    }
+
+    validatedProp("publish.github", "GITHUB_TOKEN")?.let { (id, key) ->
+        githubRepo.set(id)
+        apiKeys { github(key) }
     }
 
     // Enable Debug mode. When enabled, no files will actually be uploaded
