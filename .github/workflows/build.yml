@@ -46,7 +46,7 @@ jobs:
           path: build/libs/
 
       - name: publish
-        if: ${{ matrix.publish }}
+        if: ${{ inputs.publish }}
         run: ./gradlew publishMod
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
